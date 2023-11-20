@@ -1,0 +1,22 @@
+{
+  "name": "personal-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "blog": "cd ./app && npm run start",
+    "build:blog": "cd ./app && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Schlukey/Personal-Blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Schlukey/Personal-Blog/issues"
+  },
+  "homepage": "https://github.com/Schlukey/Personal-Blog#readme"
+}
