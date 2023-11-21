@@ -1,13 +1,14 @@
 import { Flex } from '@chakra-ui/react';
 import Header from '../../components/layouts/header';
 import { AppColors } from '../../theme';
+import { useFetchPostByIdQuery } from '../../store/api/post';
 
 const Posts: React.FC = () => {
   return (
     <Flex
       direction={'column'}
       w={'full'}
-      bgColor={AppColors.appBackground}
+      bgColor={AppColors.appBackgroundLight}
       minH={'100vh'}
     >
       <Header />
