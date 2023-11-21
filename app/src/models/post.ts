@@ -8,13 +8,13 @@ export enum DocType {
 }
 
 export interface Post extends Base {
-  docType: DocType;
+  docType?: string;
   title: string;
   content: string;
 }
 
 export interface PostForm {
-  docType: DocType;
+  docType?: string;
   title: string;
   content: string;
 }

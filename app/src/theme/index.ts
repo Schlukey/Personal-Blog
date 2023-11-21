@@ -6,7 +6,8 @@ const AppColors = {
   tertiary: '#5C8374',
   contentColor: '#93B1A6',
   highlight: '#5F8D4E',
-  appBackground: '#3C4142',
+  appBackgroundDark: '#3C4142',
+  appBackgroundLight: '#ECE3CE'
 };
 
 const textStyles = {

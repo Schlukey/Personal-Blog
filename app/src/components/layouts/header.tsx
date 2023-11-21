@@ -1,7 +1,10 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { AppColors } from '../../theme';
+import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../router/router';
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Flex
       minW={'100vw'}
@@ -9,13 +12,34 @@ const Header: React.FC = () => {
       align={'center'}
       justify={'space-between'}
       px={8}
-      borderBottom={`1px solid ${AppColors.highlight}`}
+      borderBottom={`2px solid ${AppColors.highlight}`}
       color={'white'}
       bgColor={AppColors.tertiary}
+      boxShadow={'lg'}
     >
-      <Text fontSize={'2xl'} fontWeight={'600'}>
-        Personal Journal
-      </Text>
+      <Box>
+        <Text fontSize={'2xl'} fontWeight={'600'}>
+          Personal Journal
+        </Text>
+      </Box>
+      <Flex gap={4} align={'center'} justify={'flex-end'}>
+        <Link
+          onClick={() => navigate(RoutesList.Landing)}
+          _hover={{
+            color: `${AppColors.primary}`,
+          }}
+        >
+          Home
+        </Link>
+        <Link
+          onClick={() => navigate(RoutesList.Compose)}
+          _hover={{
+            color: `${AppColors.primary}`,
+          }}
+        >
+          Compose
+        </Link>
+      </Flex>
     </Flex>
   );
 };
