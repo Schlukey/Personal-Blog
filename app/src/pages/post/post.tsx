@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import Header from '../../components/layouts/header';
 import { AppColors } from '../../theme';
-import { useFetchPostByIdQuery } from '../../store/api/post';
 
 const Posts: React.FC = () => {
   return (

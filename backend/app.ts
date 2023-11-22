@@ -2,15 +2,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 const baseUrl: string = process.env.BASEURL!;
 
 const postSchema = new mongoose.Schema({
+  dateCreated: new Date(),
   title: String,
   topic: String,
   body: String,
 });
+
+const port = 3000;
 
 export const Post = mongoose.model('Posts', postSchema);
 
@@ -19,7 +23,7 @@ mongoose.connect(baseUrl);
 const db = mongoose.connection;
 const app = express();
 app.use(express.json());
-db.on('error', console.error.bind(console, 'connection error:'));
+app.use(cors())
 db.once('open', function () {
   console.log("We're connected to MongoDB!");
 });
@@ -83,6 +87,7 @@ app.delete('/posts/delete/:id', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('blog server up');
+  console.log('listening on port', port)
 });
