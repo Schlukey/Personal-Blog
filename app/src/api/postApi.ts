@@ -16,7 +16,7 @@ export const findAllPosts = async () => {
 };
 
 export const findPostById = async (id: string) => {
-  const url = id ? `/posts/${id}` : '/items';
+  const url = id ? `/posts/${id}` : '/posts';
   return api.get(url);
 };
 
@@ -25,7 +25,14 @@ export const updatePostTrigger = async (id: string, data: EditPostForm) => {
 };
 
 export const deletePostTrigger = async (id: string) => {
-  return api.delete(`/items/delete/${id}`);
+  try {
+    const response = await api.delete(`/posts/delete/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    throw error;
+  }
 };
 
 export default api;

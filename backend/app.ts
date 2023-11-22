@@ -1,17 +1,27 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config();
 const baseUrl: string = process.env.BASEURL!;
 
-const postSchema = new mongoose.Schema({
-  dateCreated: new Date(),
+interface Post extends Document {
+  id: string;
+  dateCreated: Date;
+  title: string;
+  docType: string;
+  content: string;
+}
+
+const postSchema = new Schema<Post>({
+  id: { type: String, default: uuidv4 },
   title: String,
-  topic: String,
-  body: String,
+  docType: String,
+  content: String,
+  dateCreated: { type: Date, default: Date.now },
 });
 
 const port = 3000;
@@ -23,10 +33,8 @@ mongoose.connect(baseUrl);
 const db = mongoose.connection;
 const app = express();
 app.use(express.json());
-app.use(cors())
-db.once('open', function () {
-  console.log("We're connected to MongoDB!");
-});
+app.use(cors());
+db.once('open', function () {});
 
 app.get('/posts', async (req, res) => {
   try {
@@ -34,31 +42,36 @@ app.get('/posts', async (req, res) => {
     res.json(posts);
   } catch (e) {
     if (e instanceof Error) {
-        res.status(500).json({ message: e.message });
-      }
+      res.status(500).json({ message: e.message });
+    }
   }
 });
 
 app.get('/posts/:id', async (req, res) => {
+  console.log('req', req.params.id);
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findOne({ id: req.params.id }) as Post;
     res.json(post);
   } catch (e) {
     if (e instanceof Error) {
-        res.status(500).json({ message: e.message });
-      }
+      res.status(500).json({ message: e.message });
+    }
   }
 });
 
 app.post('/posts/create', async (req, res) => {
   try {
-    const newPost = new Post(req.body);
+    const newPost = new Post({
+      title: req.body.title,
+      docType: req.body.docType,
+      content: req.body.content,
+    });
     await newPost.save();
     res.json(newPost);
   } catch (e) {
     if (e instanceof Error) {
-        res.status(500).json({ message: e.message });
-      }
+      res.status(500).json({ message: e.message });
+    }
   }
 });
 
@@ -70,24 +83,35 @@ app.put('/posts/update/:id', async (req, res) => {
     res.json(post);
   } catch (e) {
     if (e instanceof Error) {
-        res.status(500).json({ message: e.message });
-      }
+      res.status(500).json({ message: e.message });
+    }
   }
 });
 
 app.delete('/posts/delete/:id', async (req, res) => {
+  const postId = req.params.id;
+  if (!postId) {
+    return res
+      .status(400)
+      .json({ message: 'Invalid or missing post ID in the URL parameters' });
+  }
   try {
-    const post = await Post.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Post deleted' });
+    const post = await Post.findByIdAndDelete(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    return res.json({ message: 'Post deleted' });
   } catch (e) {
-    console.log('error:', e);
+    console.error('Error:', e);
     if (e instanceof Error) {
-        res.status(500).json({ message: e.message });
-      }
+      return res.status(500).json({ message: e.message });
+    } else {
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
   }
 });
 
 app.listen(port, () => {
   console.log('blog server up');
-  console.log('listening on port', port)
+  console.log('listening on port', port);
 });

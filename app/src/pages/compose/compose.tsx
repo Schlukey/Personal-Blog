@@ -4,9 +4,12 @@ import { AppColors } from '../../theme';
 import PostEntryForm from '../../components/forms/blog-form';
 import { EditPostForm, PostForm } from '../../models/post';
 import { savePostTrigger, updatePostTrigger } from '../../api/postApi';
+import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../router/router';
 
 const Compose: React.FC = () => {
   const toast = useToast();
+  const navigate = useNavigate();
 
   const upsertPost = async (formData: any) => {
     let eddittedPost = formData.id ? true : false;
@@ -69,6 +72,7 @@ const Compose: React.FC = () => {
           onSubmit={async (formData) => {
             console.log('this is the form', formData);
             await upsertPost(formData);
+            navigate(RoutesList.Landing);
           }}
         />
       </Flex>
