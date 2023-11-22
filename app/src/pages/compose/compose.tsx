@@ -65,8 +65,10 @@ const Compose: React.FC = () => {
         bgColor={'white'}
         borderRadius={'2xl'}
         boxShadow={'lg'}
-        w={'600px'}
+        w={{base: '300px', lg: '600px'}}
         p={6}
+        justify={'center'}
+        align={'center'}
       >
         <PostEntryForm
           onSubmit={async (formData) => {

@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import Header from '../../components/layouts/header';
 import { AppColors } from '../../theme';
 import BlogDisplay from '../../components/app/blog-display/blog-display';
-import { findAllPosts, findPostById } from '../../api/postApi';
+import { findAllPosts } from '../../api/postApi';
 
 const LandingPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -18,10 +18,10 @@ const LandingPage: React.FC = () => {
   return (
     <Flex
       direction={'column'}
-      w={'full'}
+      maxW={'100vw'}
       bgColor={AppColors.appBackgroundLight}
       minH={'100vh'}
-      pos={'relative'}
+      overflow={'hidden'}
     >
       <Header />
       <BlogDisplay title='Posts' data={posts || []} />

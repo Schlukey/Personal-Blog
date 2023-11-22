@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import Header from '../../components/layouts/header';
 import { AppColors } from '../../theme';
 import { useParams } from 'react-router-dom';
@@ -33,14 +33,15 @@ const Posts: React.FC = () => {
   return (
     <Flex
       direction={'column'}
-      w={'full'}
+      maxW={'100vw'}
       bgColor={AppColors.appBackgroundLight}
       minH={'100vh'}
+      overflow={'hidden'}
       gap={12}
     >
       <Header />
-      <Flex direction={'column'} w={'full'} px={12}>
-        <BlogPost item={post || {} as Post} />
+      <Flex direction={'column'} w={'full'} p={6}>
+        <BlogPost item={post || ({} as Post)} />
       </Flex>
     </Flex>
   );

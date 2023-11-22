@@ -18,11 +18,11 @@ const Header: React.FC = () => {
       boxShadow={'lg'}
     >
       <Box>
-        <Text fontSize={'2xl'} fontWeight={'600'}>
+        <Text fontSize={{base: 'lg', md:'2xl'}} fontWeight={'600'}>
           Personal Journal
         </Text>
       </Box>
-      <Flex gap={4} align={'center'} justify={'flex-end'}>
+      <Flex gap={{base: 1, md: 4}} align={'center'} justify={'flex-end'}>
         <Link
           onClick={() => navigate(RoutesList.Landing)}
           _hover={{

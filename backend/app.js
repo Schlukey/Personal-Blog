@@ -71,15 +71,6 @@ app.get('/posts', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 app.get('/posts/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('req', req.params.id);
-    // try {
-    //   const post = await Post.findById(req.params.id);
-    //   console.log('post', post);
-    //   res.json(post);
-    // } catch (e) {
-    //   if (e instanceof Error) {
-    //     res.status(500).json({ message: e.message });
-    //   }
-    // }
     try {
         const post = yield exports.Post.findOne({ id: req.params.id });
         res.json(post);
