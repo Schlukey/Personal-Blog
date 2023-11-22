@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BaseFormProps } from './base-form';
-import { Button, Select, Stack, Text } from '@chakra-ui/react';
+import { Button, Stack, Text } from '@chakra-ui/react';
 import { AppInput } from '../app/app-input/app-input';
-import { DocType, PostForm } from '../../models/post';
+import { PostForm } from '../../models/post';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,6 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
   const {
     control: postControl,
     handleSubmit,
-    setValue,
     formState: { isValid, errors },
   } = useForm<PostForm>({
     defaultValues: form || postFormDefaultValues,
@@ -38,33 +37,11 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
     mode: 'onChange',
   });
 
-  const [categories, setCategories] = useState<string[]>();
-  const currentCategories = Object.values(DocType).filter(
-    (x) => typeof x !== 'number'
-  ) as string[];
-
-  useEffect(() => {
-    setCategories(currentCategories);
-  }, []);
-
   return (
     <Stack spacing={4} w={'full'}>
       <Text fontSize={'xl'} fontWeight={'600'}>
         What's this about
       </Text>
-      <Select>
-        {categories?.map((x) => {
-          return (
-            <option
-              key={x}
-              value={`${x}`}
-              onClick={() => setValue('docType', x)}
-            >
-              {x}
-            </option>
-          );
-        })}
-      </Select>
       <AppInput<PostForm>
         name='title'
         control={postControl}
