@@ -34,6 +34,7 @@ const BlogDisplay: React.FC<BlogDisplayProps> = ({ title, data }) => {
               bgColor: `${AppColors.contentColor}`,
             }}
             key={index}
+            gap={3}
           >
             <Flex w={'full'} justify={'space-between'} align={'center'}>
               <Text fontSize={'xl'} fontWeight={'600'}>
@@ -41,7 +42,13 @@ const BlogDisplay: React.FC<BlogDisplayProps> = ({ title, data }) => {
               </Text>
               <Text>{datePosted(x)}</Text>
             </Flex>
-            <Flex w={'full'} justify={'space-between'} align={'center'}>
+            <Flex
+              w={'full'}
+              justify={'space-between'}
+              align={{ base: 'start', md: 'center' }}
+              direction={{ base: 'column', md: 'row' }}
+              gap={{base: 3, md: 'auto'}}
+            >
               <Text>{`${x.content?.slice(0, 100)}...`}</Text>
               <Button
                 bgColor={'whitesmoke'}
