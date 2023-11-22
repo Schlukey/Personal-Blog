@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "cd ./backend && node app.js",
-    "backend:build": "lerna run start --stream",
+    "backend:build": "npm i --force-local && lerna run tsc",
     "blog": "cd ./app && npm run start",
     "build:blog": "cd ./app && npm run build"
   },

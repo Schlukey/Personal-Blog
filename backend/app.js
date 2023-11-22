@@ -16,6 +16,7 @@ exports.Post = void 0;
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const baseUrl = process.env.BASEURL;
 const postSchema = new mongoose_1.default.Schema({
@@ -23,12 +24,13 @@ const postSchema = new mongoose_1.default.Schema({
     topic: String,
     body: String,
 });
+const port = 3000;
 exports.Post = mongoose_1.default.model('Posts', postSchema);
 mongoose_1.default.connect(baseUrl);
 const db = mongoose_1.default.connection;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-db.on('error', console.error.bind(console, 'connection error:'));
+app.use((0, cors_1.default)());
 db.once('open', function () {
     console.log("We're connected to MongoDB!");
 });
@@ -91,6 +93,7 @@ app.delete('/posts/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0, 
         }
     }
 }));
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('blog server up');
+    console.log('listening on port', port);
 });
