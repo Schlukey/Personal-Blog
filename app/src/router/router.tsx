@@ -6,7 +6,7 @@ import Posts from '../pages/post/post';
 export enum RoutesList {
   Landing = '/',
   Compose = '/compose',
-  Post = '/post',
+  Post = '/posts/:id',
 }
 
 const Router: React.FC = () => {
@@ -15,7 +15,7 @@ const Router: React.FC = () => {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/compose' element={<Compose />} />
-        <Route path='/post' element={<Posts />} />
+        <Route path='/posts/:id' element={<Posts />} />
       </Routes>
     </BrowserRouter>
   );
