@@ -16,6 +16,11 @@ interface Post extends Document {
   content: string;
 }
 
+interface DocType extends Document {
+  id: string;
+  title: string;
+}
+
 const postSchema = new Schema<Post>({
   id: { type: String, default: uuidv4 },
   title: String,
@@ -24,9 +29,15 @@ const postSchema = new Schema<Post>({
   dateCreated: { type: Date, default: Date.now },
 });
 
+const docTypeSchema = new Schema<DocType>({
+  id: { type: String, default: uuidv4 },
+  title: String,
+});
+
 const port = 3000;
 
 export const Post = mongoose.model('Posts', postSchema);
+export const DocTypes = mongoose.model('DocTypes', docTypeSchema);
 
 mongoose.connect(baseUrl);
 
@@ -48,9 +59,8 @@ app.get('/posts', async (req, res) => {
 });
 
 app.get('/posts/:id', async (req, res) => {
-  console.log('req', req.params.id);
   try {
-    const post = await Post.findOne({ id: req.params.id }) as Post;
+    const post = (await Post.findOne({ id: req.params.id })) as Post;
     res.json(post);
   } catch (e) {
     if (e instanceof Error) {
@@ -111,7 +121,76 @@ app.delete('/posts/delete/:id', async (req, res) => {
   }
 });
 
+app.get('/doctype', async (req, res) => {
+  try {
+    const doctypes = DocTypes.find();
+    res.json(doctypes);
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(500).json({ message: e.message });
+    }
+  }
+});
+
+app.get('/doctype/:id', async (req, res) => {
+  try {
+    const doctype = (await DocTypes.findOne({ id: req.params.id })) as DocType;
+    res.json(doctype);
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(500).json({ message: e.message });
+    }
+  }
+});
+
+app.post('/doctype/create', async (req, res) => {
+  try {
+    const newDocType = new DocTypes({
+      title: req.body.title,
+    });
+    await newDocType.save();
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(500).json({ message: e.message });
+    }
+  }
+});
+
+app.put('/doctype/update/:id', async (req, res) => {
+  try {
+    const doctype = await DocTypes.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json(doctype);
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(500).json({ message: e.message });
+    }
+  }
+});
+
+app.delete('/doctype/delete/:id', async (req, res) => {
+  const docTypeId = req.params.id;
+  if (!docTypeId) {
+    return res
+      .status(400)
+      .json({ message: 'Invalid or missing ID in the url parameters' });
+  }
+  try {
+    const docType = await DocTypes.findByIdAndDelete(docTypeId);
+    if (!docType) {
+      return res.status(404).json({ message: 'DocType not found' });
+    }
+    return res.json({ message: 'DocType deleted' });
+  } catch (e) {
+    if (e instanceof Error) {
+      return res.status(500).json({ message: e.message });
+    } else {
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+});
+
 app.listen(port, () => {
-  console.log('blog server up');
-  console.log('listening on port', port);
+  
 });

@@ -1,14 +1,19 @@
 import { Base } from './base';
 
-export enum DocType {
-  General,
-  Note,
-  Theological,
-  Michaella,
+export interface DocType extends Base {
+  title: string;
+}
+
+export interface DocTypeFormData {
+  title: string;
+}
+
+export interface EditDocTypeForm extends DocTypeFormData {
+  id: string;
 }
 
 export interface Post extends Base {
-  docType?: string;
+  docType?: DocType;
   title: string;
   content: string;
 }

@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.DocTypes = exports.Post = void 0;
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importStar(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -50,8 +50,13 @@ const postSchema = new mongoose_1.Schema({
     content: String,
     dateCreated: { type: Date, default: Date.now },
 });
+const docTypeSchema = new mongoose_1.Schema({
+    id: { type: String, default: uuid_1.v4 },
+    title: String,
+});
 const port = 3000;
 exports.Post = mongoose_1.default.model('Posts', postSchema);
+exports.DocTypes = mongoose_1.default.model('DocTypes', docTypeSchema);
 mongoose_1.default.connect(baseUrl);
 const db = mongoose_1.default.connection;
 const app = (0, express_1.default)();
@@ -70,18 +75,8 @@ app.get('/posts', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 app.get('/posts/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('req', req.params.id);
-    // try {
-    //   const post = await Post.findById(req.params.id);
-    //   console.log('post', post);
-    //   res.json(post);
-    // } catch (e) {
-    //   if (e instanceof Error) {
-    //     res.status(500).json({ message: e.message });
-    //   }
-    // }
     try {
-        const post = yield exports.Post.findOne({ id: req.params.id });
+        const post = (yield exports.Post.findOne({ id: req.params.id }));
         res.json(post);
     }
     catch (e) {
@@ -143,7 +138,76 @@ app.delete('/posts/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0, 
         }
     }
 }));
+app.get('/doctype', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctypes = exports.DocTypes.find();
+        res.json(doctypes);
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(500).json({ message: e.message });
+        }
+    }
+}));
+app.get('/doctype/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctype = (yield exports.DocTypes.findOne({ id: req.params.id }));
+        res.json(doctype);
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(500).json({ message: e.message });
+        }
+    }
+}));
+app.post('/doctype/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const newDocType = new exports.DocTypes({
+            title: req.body.title,
+        });
+        yield newDocType.save();
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(500).json({ message: e.message });
+        }
+    }
+}));
+app.put('/doctype/update/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctype = yield exports.DocTypes.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.json(doctype);
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(500).json({ message: e.message });
+        }
+    }
+}));
+app.delete('/doctype/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const docTypeId = req.params.id;
+    if (!docTypeId) {
+        return res
+            .status(400)
+            .json({ message: 'Invalid or missing ID in the url parameters' });
+    }
+    try {
+        const docType = yield exports.DocTypes.findByIdAndDelete(docTypeId);
+        if (!docType) {
+            return res.status(404).json({ message: 'DocType not found' });
+        }
+        return res.json({ message: 'DocType deleted' });
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            return res.status(500).json({ message: e.message });
+        }
+        else {
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+}));
 app.listen(port, () => {
-    console.log('blog server up');
-    console.log('listening on port', port);
 });

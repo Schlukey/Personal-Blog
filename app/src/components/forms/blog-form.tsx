@@ -38,32 +38,15 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
     mode: 'onChange',
   });
 
-  const [categories, setCategories] = useState<string[]>();
-  const currentCategories = Object.values(DocType).filter(
-    (x) => typeof x !== 'number'
-  ) as string[];
-
-  useEffect(() => {
-    setCategories(currentCategories);
-  }, []);
-
   return (
     <Stack spacing={4} w={'full'}>
       <Text fontSize={'xl'} fontWeight={'600'}>
         What's this about
       </Text>
       <Select>
-        {categories?.map((x) => {
-          return (
-            <option
-              key={x}
-              value={`${x}`}
-              onClick={() => setValue('docType', x)}
-            >
-              {x}
-            </option>
-          );
-        })}
+        {
+          
+        }
       </Select>
       <AppInput<PostForm>
         name='title'
