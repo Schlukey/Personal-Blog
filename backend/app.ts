@@ -34,10 +34,11 @@ const docTypeSchema = new Schema<DocType>({
   title: String,
 });
 
+export const DocTypes = mongoose.model('DocTypes', docTypeSchema);
+
 const port = 3000;
 
 export const Post = mongoose.model('Posts', postSchema);
-export const DocTypes = mongoose.model('DocTypes', docTypeSchema);
 
 mongoose.connect(baseUrl);
 
@@ -123,7 +124,7 @@ app.delete('/posts/delete/:id', async (req, res) => {
 
 app.get('/doctype', async (req, res) => {
   try {
-    const doctypes = DocTypes.find();
+    const doctypes = await DocTypes.find();
     res.json(doctypes);
   } catch (e) {
     if (e instanceof Error) {
@@ -191,6 +192,4 @@ app.delete('/doctype/delete/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  
-});
+app.listen(port, () => {});
