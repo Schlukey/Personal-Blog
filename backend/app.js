@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DocTypes = exports.Post = void 0;
+exports.Post = exports.DocTypes = void 0;
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importStar(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -54,9 +54,9 @@ const docTypeSchema = new mongoose_1.Schema({
     id: { type: String, default: uuid_1.v4 },
     title: String,
 });
+exports.DocTypes = mongoose_1.default.model('DocTypes', docTypeSchema);
 const port = 3000;
 exports.Post = mongoose_1.default.model('Posts', postSchema);
-exports.DocTypes = mongoose_1.default.model('DocTypes', docTypeSchema);
 mongoose_1.default.connect(baseUrl);
 const db = mongoose_1.default.connection;
 const app = (0, express_1.default)();
@@ -140,7 +140,7 @@ app.delete('/posts/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0, 
 }));
 app.get('/doctype', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const doctypes = exports.DocTypes.find();
+        const doctypes = yield exports.DocTypes.find();
         res.json(doctypes);
     }
     catch (e) {
@@ -209,5 +209,4 @@ app.delete('/doctype/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0
         }
     }
 }));
-app.listen(port, () => {
-});
+app.listen(port, () => { });
