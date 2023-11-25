@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 import Header from '../../components/layouts/header';
 import { AppColors } from '../../theme';
 import { useParams } from 'react-router-dom';
 import { findPostById } from '../../api/postApi';
 import { Post } from '../../models/post';
 import BlogPost from '../../components/app/blog-post/blog-post';
+import { useNavigate } from 'react-router-dom';
+import { RoutesList } from '../../router/router';
 
 const Posts: React.FC = () => {
   const id = useParams<{ id: string }>();
   const [post, setPost] = useState<Post>();
-  console.log('this is what the id looks like', id.id);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPostById = async () => {
@@ -40,7 +42,17 @@ const Posts: React.FC = () => {
       gap={12}
     >
       <Header />
-      <Flex direction={'column'} w={'full'} p={6}>
+      <Flex px={{ base: 3, md: 8 }}>
+        <Button
+          borderRadius={'full'}
+          bgColor={'white'}
+          _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg', bgColor: 'white' }}
+          onClick={() => navigate(RoutesList.Landing)}
+        >
+          Back
+        </Button>
+      </Flex>
+      <Flex direction={'column'} w={'full'} px={{ base: 3, md: 8 }}>
         <BlogPost item={post || ({} as Post)} />
       </Flex>
     </Flex>

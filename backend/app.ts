@@ -16,6 +16,11 @@ interface Post extends Document {
   content: string;
 }
 
+interface DocType extends Document {
+  id: string;
+  title: string;
+}
+
 const postSchema = new Schema<Post>({
   id: { type: String, default: uuidv4 },
   title: String,
@@ -23,6 +28,13 @@ const postSchema = new Schema<Post>({
   content: String,
   dateCreated: { type: Date, default: Date.now },
 });
+
+const docTypeSchema = new Schema<DocType>({
+  id: { type: String, default: uuidv4 },
+  title: String,
+});
+
+export const DocTypes = mongoose.model('DocTypes', docTypeSchema);
 
 const port = 3000;
 
@@ -48,9 +60,8 @@ app.get('/posts', async (req, res) => {
 });
 
 app.get('/posts/:id', async (req, res) => {
-  console.log('req', req.params.id);
   try {
-    const post = await Post.findOne({ id: req.params.id }) as Post;
+    const post = (await Post.findOne({ id: req.params.id })) as Post;
     res.json(post);
   } catch (e) {
     if (e instanceof Error) {
@@ -111,7 +122,4 @@ app.delete('/posts/delete/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log('blog server up');
-  console.log('listening on port', port);
-});
+app.listen(port, () => {});

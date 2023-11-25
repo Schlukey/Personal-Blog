@@ -56,6 +56,7 @@ const Compose: React.FC = () => {
       minH={'100vh'}
       align={'center'}
       gap={8}
+      pb={{base: 4, md: 0}}
     >
       <Header />
       <Text fontSize={'2xl'} fontWeight={'600'} color={AppColors.highlight}>
@@ -65,10 +66,8 @@ const Compose: React.FC = () => {
         bgColor={'white'}
         borderRadius={'2xl'}
         boxShadow={'lg'}
-        w={{base: '300px', lg: '600px'}}
-        p={6}
-        justify={'center'}
-        align={'center'}
+        w={{base: '350px', md: '600px'}}
+        p={{base: 3, md: 6}}
       >
         <PostEntryForm
           onSubmit={async (formData) => {

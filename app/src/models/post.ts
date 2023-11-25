@@ -1,14 +1,7 @@
 import { Base } from './base';
 
-export enum DocType {
-  General,
-  Note,
-  Theological,
-  Michaella,
-}
-
 export interface Post extends Base {
-  docType?: string;
+  docType: string;
   title: string;
   content: string;
 }

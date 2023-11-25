@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BaseFormProps } from './base-form';
-import { Button, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Select, Stack, Text } from '@chakra-ui/react';
 import { AppInput } from '../app/app-input/app-input';
 import { PostForm } from '../../models/post';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { AppColors } from '../../theme';
+import { AppMarkdown } from '../app/app-markdown/app-markdown';
 
 const postFormDefaultValues: PostForm = {
   title: '',
@@ -29,7 +30,8 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
 }) => {
   const {
     control: postControl,
-    handleSubmit,
+    setValue,
+    getValues,
     formState: { isValid, errors },
   } = useForm<PostForm>({
     defaultValues: form || postFormDefaultValues,
@@ -37,11 +39,44 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
     mode: 'onChange',
   });
 
+  const selectOptions = ['note', 'personal', 'theology'];
+
+  const [warning, setWarning] = useState<string>('none');
+
+  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectItem = e.currentTarget.value;
+    setValue('docType', selectItem);
+  };
+
+  const handleFormSubmit = () => {
+    const formValues = getValues();
+    let isValid = true;
+    if (!formValues.docType) {
+      setWarning('flex');
+      setTimeout(() => {
+        setWarning('none');
+      }, 5000);
+      isValid = false;
+    }
+    if (!isValid) return;
+
+    return onSubmit(formValues);
+  };
+
   return (
-    <Stack spacing={4} w={'full'}>
+    <Stack spacing={4} w={'full'} py={{base: 6, md: 0}}>
       <Text fontSize={'xl'} fontWeight={'600'}>
         What's this about
       </Text>
+      <Select placeholder='Doc Type' onChange={onSelectChange}>
+        {selectOptions.map((x) => {
+          return (
+            <option value={x} key={x}>
+              {x}
+            </option>
+          );
+        })}
+      </Select>
       <AppInput<PostForm>
         name='title'
         control={postControl}
@@ -49,25 +84,33 @@ const PostEntryForm: React.FC<PostFormProps<PostForm>> = ({
         label='Title'
         placeHolder='Title'
       />
-      <AppInput<PostForm>
-        textArea
-        control={postControl}
+      <AppMarkdown<PostForm>
         name='content'
+        control={postControl}
         error={errors.content}
-        label='Content'
-        placeHolder='Everything else goes here'
-        rows={8}
+        label=''
       />
       <Button
         bgColor={'transparent'}
         borderRadius={'full'}
         border={`1px solid ${AppColors.contentColor}`}
         color={AppColors.highlight}
-        onClick={handleSubmit(onSubmit)}
+        onClick={handleFormSubmit}
         isDisabled={!isValid}
       >
         Save
       </Button>
+      <Flex
+        display={warning}
+        bgColor={'red.400'}
+        direction={'column'}
+        w={'full'}
+        p={4}
+      >
+        <Text fontSize={'lg'} color={'white'}>
+          Please enter a doc type
+        </Text>
+      </Flex>
     </Stack>
   );
 };

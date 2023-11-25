@@ -1,6 +1,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { AppColors } from '../../../theme';
 import { Post } from '../../../models/post';
+import TextRenderer from '../app-text-renderer/app-text-renderer';
 
 export type BlogPostProps = {
   item: Post;
@@ -20,13 +21,15 @@ const BlogPost: React.FC<BlogPostProps> = ({ item }) => {
       bgColor={AppColors.contentColor}
       gap={6}
     >
-      <Flex justify={'space-between'} align={'center'}>
+      <Flex justify={'space-between'}>
         <Text fontSize={'2xl'} fontWeight={'600'} color={'white'}>
           {item?.title}
         </Text>
         <Text color={'white'}>{datePosted(item)}</Text>
       </Flex>
-      <Text color={'white'}>{item?.content}</Text>
+      <Flex color={'white'}>
+        <TextRenderer markdown={item.content}></TextRenderer>
+      </Flex>
     </Flex>
   );
 };
