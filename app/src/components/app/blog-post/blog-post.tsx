@@ -1,15 +1,16 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { AppColors } from '../../../theme';
 import { Post } from '../../../models/post';
+import TextRenderer from '../app-text-renderer/app-text-renderer';
 
 export type BlogPostProps = {
   item: Post;
 };
 
 const BlogPost: React.FC<BlogPostProps> = ({ item }) => {
-    const datePosted = (x: Post) => {
-        return new Date(x.dateCreated).toUTCString().slice(0, 14);
-      };
+  const datePosted = (x: Post) => {
+    return new Date(x.dateCreated).toUTCString().slice(0, 14);
+  };
   return (
     <Flex
       direction={'column'}
@@ -21,14 +22,16 @@ const BlogPost: React.FC<BlogPostProps> = ({ item }) => {
       gap={6}
     >
       <Flex justify={'space-between'}>
-      <Text fontSize={'2xl'} fontWeight={'600'} color={'white'}>
-        {item?.title}
-      </Text>
-      <Text color={'white'}>{datePosted(item)}</Text>
+        <Text fontSize={'2xl'} fontWeight={'600'} color={'white'}>
+          {item?.title}
+        </Text>
+        <Text color={'white'}>{datePosted(item)}</Text>
       </Flex>
-      <Text color={'white'}>{item?.content}</Text>
+      <Flex color={'white'}>
+        <TextRenderer markdown={item.content}></TextRenderer>
+      </Flex>
     </Flex>
   );
 };
 
-export default BlogPost
+export default BlogPost;

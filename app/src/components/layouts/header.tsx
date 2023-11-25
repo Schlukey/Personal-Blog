@@ -11,7 +11,7 @@ const Header: React.FC = () => {
       h={'85px'}
       align={'center'}
       justify={'space-between'}
-      px={8}
+      px={{base: 3, md: 8}}
       borderBottom={`2px solid ${AppColors.highlight}`}
       color={'white'}
       bgColor={AppColors.tertiary}
