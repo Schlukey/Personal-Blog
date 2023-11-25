@@ -18,10 +18,10 @@ const LandingPage: React.FC = () => {
   return (
     <Flex
       direction={'column'}
-      w={'full'}
+      maxW={'100vw'}
       bgColor={AppColors.appBackgroundLight}
       minH={'100vh'}
-      pos={'relative'}
+      overflow={'hidden'}
     >
       <Header />
       <BlogDisplay title='Posts' data={posts || []} />

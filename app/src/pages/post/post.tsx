@@ -35,9 +35,10 @@ const Posts: React.FC = () => {
   return (
     <Flex
       direction={'column'}
-      w={'full'}
+      maxW={'100vw'}
       bgColor={AppColors.appBackgroundLight}
       minH={'100vh'}
+      overflow={'hidden'}
       gap={12}
     >
       <Header />
