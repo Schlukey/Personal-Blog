@@ -18,19 +18,14 @@ const Posts: React.FC = () => {
     const fetchPostById = async () => {
       try {
         const response = await findPostById(id.id!);
-        console.log('API response:', response);
         setPost(response.data as Post);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-      }
+      } catch (error) {}
     };
 
     fetchPostById();
   }, [id]);
 
-  useEffect(() => {
-    console.log('this is the post', post);
-  }, [post]);
+  useEffect(() => {}, [post]);
 
   return (
     <Flex
@@ -46,13 +41,17 @@ const Posts: React.FC = () => {
         <Button
           borderRadius={'full'}
           bgColor={'white'}
-          _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg', bgColor: 'white' }}
+          _hover={{
+            transform: 'translateY(-2px)',
+            boxShadow: 'lg',
+            bgColor: 'white',
+          }}
           onClick={() => navigate(RoutesList.Landing)}
         >
           Back
         </Button>
       </Flex>
-      <Flex direction={'column'} w={'full'} px={{ base: 3, md: 8 }}>
+      <Flex direction={'column'} w={'full'} px={{ base: 3, md: 8 }} pb={8}>
         <BlogPost item={post || ({} as Post)} />
       </Flex>
     </Flex>

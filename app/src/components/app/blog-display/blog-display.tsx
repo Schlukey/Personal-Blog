@@ -38,17 +38,17 @@ const BlogDisplay: React.FC<BlogDisplayProps> = ({ title, data }) => {
         <TabPanels>
           <TabPanel gap={3}>
             {notes.map((x) => {
-              return <PostCard post={x} />;
+              return <PostCard post={x} key={x.id} />;
             })}
           </TabPanel>
           <TabPanel>
             {theologyNotes.map((x) => {
-              return <PostCard post={x} />;
+              return <PostCard post={x} key={x.id} />;
             })}
           </TabPanel>
           <TabPanel>
             {journalEntries.map((x) => {
-              return <PostCard post={x} />;
+              return <PostCard post={x} key={x.id} />;
             })}
           </TabPanel>
         </TabPanels>
