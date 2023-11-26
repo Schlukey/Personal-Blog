@@ -10,7 +10,7 @@ export type PostCardProps = {
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const datePosted = (x: Post) => {
-    return new Date(x.dateCreated).toUTCString().slice(0, 14);
+    return new Date(x.dateCreated).toUTCString().slice(0, 16);
   };
   return (
     <Flex
