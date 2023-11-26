@@ -37,7 +37,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         gap={{ base: 3, md: 'auto' }}
       >
         <Flex gap={2}>
-          <TextRenderer markdown={`${post.content?.slice(0, 100)}`} />
+          <TextRenderer markdown={`${post.content?.slice(0, 100)}...`} />
         </Flex>
         <Button
           bgColor={'white'}
